@@ -5,13 +5,31 @@ import * as bodyParser from 'body-parser'
 import { sequelize } from './db'
 import ProgramRouter from './routes/programs'
 import ExerciseRouter from './routes/exercises'
+import UserRouter from './routes/user'
+import passport from 'passport'
+import session from 'express-session'
+import "./utils/passport"
 
-const app = express()
+const app = express();
+
+
+app.use(
+    session({
+      secret: 'testket', // KEY SHOULD BE STORE IN ANOTHER PLACE
+      resave: false,
+      saveUninitialized: false,
+    })
+  );
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use('/programs', ProgramRouter())
 app.use('/exercises', ExerciseRouter())
+app.use('/user', UserRouter())
 
 const httpServer = http.createServer(app)
 

@@ -4,6 +4,7 @@ import { EXERCISE_DIFFICULTY } from './utils/enums'
 const {
 	Exercise,
 	Program,
+	User
 } = models
 
 const seedDB = async () => {
@@ -42,6 +43,7 @@ const seedDB = async () => {
 		difficulty: EXERCISE_DIFFICULTY.HARD,
 		programID: 2
 	}])
+	await User.bulkCreate(usersData);
 }
 
 seedDB().then(() => {
@@ -51,3 +53,42 @@ seedDB().then(() => {
 	console.error('error in seed, check your data and model \n \n', err)
 	process.exit(1)
 })
+
+const usersData = [
+	{
+	  name: 'John',
+	  surname: 'Doe',
+	  nickName: 'johndoe',
+	  email: 'john@example.com',
+	  age: 30,
+	  role: 'USER',
+	  password: "fdfdfd",
+	},
+	{
+	  name: 'Alice',
+	  surname: 'Smith',
+	  nickName: 'alicesmith',
+	  email: 'alice@example.com',
+	  age: 25,
+	  role: 'USER',
+	  password: "1234",
+	},
+	{
+	  name: 'Bob',
+	  surname: 'Johnson',
+	  nickName: 'bobjohnson',
+	  email: 'bob@example.com',
+	  age: 35,
+	  role: 'ADMIN',
+	  password: "dsdsdsd",
+	},
+	{
+	  name: 'Eva',
+	  surname: 'Brown',
+	  nickName: 'evabrown',
+	  email: 'eva@example.com',
+	  age: 28,
+	  role: 'USER',
+	  password: "sadsadads",
+	},
+  ];
