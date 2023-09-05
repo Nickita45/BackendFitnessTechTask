@@ -18,33 +18,41 @@ const seedDB = async () => {
 	}, {
 		name: 'Program 3'
 	}] as any[], { returning: true })
+	
+	await User.bulkCreate(usersData);
 
 	await Exercise.bulkCreate([{
 		name: 'Exercise 1',
 		difficulty: EXERCISE_DIFFICULTY.EASY,
-		programID: 1
+		programID: 1,
+		userID: 1
 	}, {
 		name: 'Exercise 2',
 		difficulty: EXERCISE_DIFFICULTY.EASY,
-		programID: 2
+		programID: 2,
+		userID: 2, 
 	}, {
 		name: 'Exercise 3',
 		difficulty: EXERCISE_DIFFICULTY.MEDIUM,
-		programID: 1
+		programID: 1,
+		userID: 1
 	}, {
 		name: 'Exercise 4',
 		difficulty: EXERCISE_DIFFICULTY.MEDIUM,
-		programID: 2
+		programID: 2,
+		userID: 3
 	}, {
 		name: 'Exercise 5',
 		difficulty: EXERCISE_DIFFICULTY.HARD,
-		programID: 1
+		programID: 1,
+		userID: 2
 	}, {
 		name: 'Exercise 6',
 		difficulty: EXERCISE_DIFFICULTY.HARD,
-		programID: 2
+		programID: 2,
+		userID: 1
 	}])
-	await User.bulkCreate(usersData);
+	
 }
 
 seedDB().then(() => {

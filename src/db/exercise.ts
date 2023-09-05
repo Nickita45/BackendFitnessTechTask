@@ -8,6 +8,7 @@ import { DatabaseModel } from '../types/db'
 import { ProgramModel } from './program'
 
 import { EXERCISE_DIFFICULTY } from '../utils/enums'
+import { UserModel } from './user'
 
 export class ExerciseModel extends DatabaseModel {
 	id: number
@@ -15,6 +16,7 @@ export class ExerciseModel extends DatabaseModel {
 	name: String
 
 	program: ProgramModel
+	user: UserModel
 }
 
 export default (sequelize: Sequelize) => {
@@ -39,13 +41,19 @@ export default (sequelize: Sequelize) => {
 	})
 
 	ExerciseModel.associate = (models) => {
-		(ExerciseModel as any).belongsTo(models.Program, {
+		ExerciseModel.belongsTo(models.Program, {
 			foreignKey: {
 				name: 'programID',
 				allowNull: false
 			},
-		})
-	}
+		});
+		ExerciseModel.belongsTo(models.User, {
+			foreignKey: {
+				name: 'userID',
+				allowNull: false
+			},
+		});
+	};
 
 	return ExerciseModel
 }
