@@ -7,17 +7,13 @@ import {
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
 
-import { models } from '../db'
+import { User } from '../db'
 import { UserModel } from '../db/user';
 import { ROLE } from '../utils/enums';
 import { isValidEmail } from '../utils/regexpfunctions';
 import crypto from 'crypto';
 
 const router: Router = Router()
-
-const {
-    User
-} = models
 
 export default () => {
     router.get('/', async (_req: Request, res: Response, _next: NextFunction) => {
@@ -97,8 +93,8 @@ export default () => {
     })
     // Protected route using jwt and password
     router.get('/protected-route', passport.authenticate('jwt', { session: false }), (req, res) => {
-        // only for authorization users
-        res.json({ message: 'Protected Route' });
+        // only for authorization
+        res.json({ message: 'Protected Route' , user: req.user});
     });
 
     return router

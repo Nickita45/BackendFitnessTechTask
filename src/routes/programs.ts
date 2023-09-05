@@ -5,13 +5,9 @@ import {
 	NextFunction
 } from 'express'
 
-import { models } from '../db'
+import { Program } from '../db'
 
 const router: Router = Router()
-
-const {
-	Program
-} = models
 
 export default () => {
 	router.get('/', async (_req: Request, res: Response, _next: NextFunction) => {

@@ -3,13 +3,12 @@
 import {
     Sequelize,
     DataTypes,
-    Model
 } from 'sequelize'
 import { ROLE } from '../utils/enums'
 import { DatabaseModel } from '../types/db'
 
 export class UserModel extends DatabaseModel {
-    // better make id using string
+    // better make id using string UUID
     id: number
     name: String
     surname: String

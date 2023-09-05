@@ -36,4 +36,10 @@ Object.values(models).forEach((value: any) => {
 	}
 })
 
+export const {
+	Exercise,
+	Program,
+	User
+} = models
+
 export { models, modelsBuilder, sequelize }

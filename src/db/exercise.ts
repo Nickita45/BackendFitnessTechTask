@@ -3,7 +3,6 @@
 import {
 	Sequelize,
 	DataTypes,
-	Model
 } from 'sequelize'
 import { DatabaseModel } from '../types/db'
 import { ProgramModel } from './program'
