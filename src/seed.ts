@@ -1,5 +1,6 @@
 import { models, sequelize } from './db/index'
 import { EXERCISE_DIFFICULTY } from './utils/enums'
+import crypto from 'crypto'
 
 const {
 	Exercise,
@@ -62,7 +63,7 @@ const usersData = [
 	  email: 'john@example.com',
 	  age: 30,
 	  role: 'USER',
-	  password: "fdfdfd",
+	  password: crypto.createHash('md5').update("fdfdfd").digest('hex'),
 	},
 	{
 	  name: 'Alice',
@@ -71,7 +72,7 @@ const usersData = [
 	  email: 'alice@example.com',
 	  age: 25,
 	  role: 'USER',
-	  password: "1234",
+	  password: crypto.createHash('md5').update("1234").digest('hex'),
 	},
 	{
 	  name: 'Bob',
@@ -80,7 +81,7 @@ const usersData = [
 	  email: 'bob@example.com',
 	  age: 35,
 	  role: 'ADMIN',
-	  password: "dsdsdsd",
+	  password: crypto.createHash('md5').update("dsdsdsd").digest('hex'),
 	},
 	{
 	  name: 'Eva',
@@ -89,6 +90,6 @@ const usersData = [
 	  email: 'eva@example.com',
 	  age: 28,
 	  role: 'USER',
-	  password: "sadsadads",
+	  password: crypto.createHash('md5').update("sadsadads").digest('hex'),
 	},
   ];
