@@ -1,8 +1,7 @@
 function isValidEmail(email:string) {
-    // Регулярное выражение для проверки адреса электронной почты
+    // Regex for email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
-    // Проверяем строку с помощью регулярного выражения
     return emailRegex.test(email);
 }
 

@@ -43,7 +43,7 @@ export default () => {
 
                 const payload = { user: { id: user.id, name: user.nickName } };
 
-                jwt.sign(payload, 'secret-key', { expiresIn: '1h' }, (err, token) => {
+                jwt.sign(payload, 'testket', { expiresIn: '1h' }, (err, token) => {
                     if (err) throw err;
                     res.json({ token });
                 });
@@ -53,7 +53,7 @@ export default () => {
 
     router.post('/register', async (_req: Request, res: Response, _next: NextFunction) => {
         try {
-            
+
             if (!_req.query.nickName || !_req.query.password || !isValidEmail(_req.query.email.toString())) {
                 return res.status(400).json({ msg: 'Invalid Credentials' });
             }
@@ -87,7 +87,7 @@ export default () => {
             )
             const payload = { user: { id: newUser.id, name: newUser.nickName } };
 
-            jwt.sign(payload, 'secret-key', { expiresIn: '1h' }, (err, token) => {
+            jwt.sign(payload, 'testket', { expiresIn: '1h' }, (err, token) => {
                 if (err) throw err;
                 res.json({ token });
             });
@@ -95,9 +95,9 @@ export default () => {
             res.status(500).send('Server error');
         }
     })
-    // Защита маршрутов с использованием Passport.js и JWT
+    // Protected route using jwt and password
     router.get('/protected-route', passport.authenticate('jwt', { session: false }), (req, res) => {
-        // Защищенный маршрут доступен только аутентифицированным пользователям с действительным JWT
+        // only for authorization users
         res.json({ message: 'Protected Route' });
     });
 
