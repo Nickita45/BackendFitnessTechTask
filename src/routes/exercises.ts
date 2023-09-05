@@ -35,7 +35,8 @@ export default () => {
 			{
 				difficulty: difficulty,
 				name: _req.query.name || `Exercise ${exercisesIndex}`,
-				programID: _req.query.programID || 1
+				programID: _req.query.programID || 1,
+				userID: _req.user.id
 			});
 
 		return res.json({
@@ -43,7 +44,7 @@ export default () => {
 			message: 'New Exercise'
 		})
 	})
-	router.put('', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
+	router.put('/:id', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 
 		if (_req.user.role != "ADMIN") {
 			return res.status(403).json({ message: 'Access denied' });
@@ -64,6 +65,7 @@ export default () => {
 			const difficulty = _req.query.difficulty && Object.values(EXERCISE_DIFFICULTY).includes(_req.query.difficulty as EXERCISE_DIFFICULTY) ? _req.query.difficulty : exerciseToUpdate.difficulty;
 			exerciseToUpdate.difficulty = difficulty;
 			exerciseToUpdate.programID = _req.query.programID || exerciseToUpdate.programID;
+			exerciseToUpdate.userID = _req.user.id;
 
 			await exerciseToUpdate.save();
 
@@ -76,7 +78,7 @@ export default () => {
 			return res.status(500).json({ message: 'Server error' });
 		}
 	})
-	router.delete('', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
+	router.delete('/:id', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 
 		if (_req.user.role != "ADMIN") {
 			return res.status(403).json({ message: 'Access denied' });
