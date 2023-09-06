@@ -7,6 +7,7 @@ import { Sequelize } from 'sequelize'
 import defineExercise from './exercise'
 import defineProgram from './program'
 import defineUser from './user'
+import defineCompletedExercise from './completedExercise'
 
 const sequelize: Sequelize = new Sequelize('postgresql://postgres:1234@localhost:5432/fitness_app', {
 	logging: false
@@ -19,6 +20,7 @@ const modelsBuilder = (instance: Sequelize) => ({
 	Exercise: instance.import(path.join(__dirname, 'exercise'), defineExercise),
 	Program: instance.import(path.join(__dirname, 'program'), defineProgram),
 	User: instance.import(path.join(__dirname, 'user'), defineUser),
+	CompletedExercise: instance.import(path.join(__dirname, 'completedexercise'), defineCompletedExercise),
 })
 
 const models = modelsBuilder(sequelize)
@@ -39,7 +41,8 @@ Object.values(models).forEach((value: any) => {
 export const {
 	Exercise,
 	Program,
-	User
+	User,
+	CompletedExercise
 } = models
 
 export { models, modelsBuilder, sequelize }

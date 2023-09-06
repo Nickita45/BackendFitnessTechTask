@@ -7,6 +7,7 @@ import {
 import { ROLE } from '../utils/enums'
 import { DatabaseModel } from '../types/db'
 import { ExerciseModel } from './exercise'
+import { CompletedExercise } from './completedExercise'
 
 export class UserModel extends DatabaseModel {
     // better make id using string UUID
@@ -20,6 +21,7 @@ export class UserModel extends DatabaseModel {
     password: String
 
     exercises: ExerciseModel[]
+    completedExercise: CompletedExercise[]
 }
 
 export default (sequelize: Sequelize) => {
@@ -67,13 +69,20 @@ export default (sequelize: Sequelize) => {
         tableName: 'users'
     })
     UserModel.associate = (models) => {
-		(UserModel as any).hasMany(models.Exercise, {
-			foreignKey: {
-				name: 'programID',
-				allowNull: false
-			},
-			as: 'translations'
-		})
-	}
+        UserModel.hasMany(models.Exercise, {
+            foreignKey: {
+                name: 'userID',
+                allowNull: false,
+            },
+            as: 'translations',
+        });
+        UserModel.hasMany(models.CompletedExercise, {
+            foreignKey: {
+                name: 'userID',
+                allowNull: false,
+            },
+            as: 'completedExercises',
+        });
+    };
     return UserModel
 }
