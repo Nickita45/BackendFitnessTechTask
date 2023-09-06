@@ -16,13 +16,23 @@ import crypto from 'crypto';
 const router: Router = Router()
 
 export default () => {
+    router.get('/profile', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response) => {
+        try {
+          const user = await User.findByPk(_req.user.id, { attributes: ['name', 'surname', 'age', 'nickName'] });
+          if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+          return res.status(200).json(user);
+        } catch (error) {
+          return res.status(500).json({ message: 'Server error' });
+        }
+      });
     router.get('/', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 
+        let programs = await User.findAll();
         if (_req.user.role != "ADMIN") {
-            return res.status(403).json({ message: 'Access denied' });
+            programs = await User.findAll({ attributes: ['id', 'nickName'] })
         }
-
-        const programs = await User.findAll()
         return res.json({
             data: programs,
             message: 'List of users'
@@ -149,10 +159,9 @@ export default () => {
         }
     })
     // Protected route using jwt and password
-    router.get('/protected-route', passport.authenticate('jwt', { session: false }), (req, res) => {
+    router.get('/protected-route', passport.authenticate('jwt', { session: false }), (_req, res) => {
         // only for authorization
-        res.json({ message: 'Protected Route', user: req.user });
+        res.json({ message: 'Protected Route', user: _req.user });
     });
-
     return router
 }
