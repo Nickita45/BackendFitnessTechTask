@@ -6,6 +6,7 @@ import { sequelize } from './db'
 import ProgramRouter from './routes/programs'
 import ExerciseRouter from './routes/exercises'
 import UserRouter from './routes/user'
+import CompletedExercisesRouter from './routes/completedexercises'
 import passport from 'passport'
 import session from 'express-session'
 import "./utils/passport"
@@ -30,6 +31,7 @@ app.use(bodyParser.json())
 app.use('/programs', ProgramRouter())
 app.use('/exercises', ExerciseRouter())
 app.use('/user', UserRouter())
+app.use('/completed', CompletedExercisesRouter())
 
 const httpServer = http.createServer(app)
 

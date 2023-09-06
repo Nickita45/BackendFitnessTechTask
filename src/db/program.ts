@@ -37,7 +37,7 @@ export default (sequelize: Sequelize) => {
 	ProgramModel.associate = (models) => {
 		(ProgramModel as any).hasMany(models.Exercise, {
 			foreignKey: {
-				name: 'userID',
+				name: 'programID',
 				allowNull: false
 			},
 			as: 'translations'

@@ -1,12 +1,6 @@
-import { models, sequelize } from './db/index'
+import { CompletedExercise, Exercise, Program, User, sequelize } from './db/index'
 import { EXERCISE_DIFFICULTY } from './utils/enums'
 import crypto from 'crypto'
-
-const {
-	Exercise,
-	Program,
-	User
-} = models
 
 const seedDB = async () => {
 	await sequelize.sync({ force: true })
@@ -20,7 +14,7 @@ const seedDB = async () => {
 	}] as any[], { returning: true })
 	
 	await User.bulkCreate(usersData);
-
+	
 	await Exercise.bulkCreate([{
 		name: 'Exercise 1',
 		difficulty: EXERCISE_DIFFICULTY.EASY,
@@ -51,7 +45,13 @@ const seedDB = async () => {
 		difficulty: EXERCISE_DIFFICULTY.HARD,
 		programID: 2,
 		userID: 1
+	}]);
+	await CompletedExercise.bulkCreate([{
+		duration: 400, 
+		exerciseID: 1,
+		userID: 1
 	}])
+	
 	
 }
 
