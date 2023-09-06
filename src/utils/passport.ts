@@ -2,16 +2,14 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import crypto from 'crypto';
-import { models } from '../db/index';
+import { User } from '../db/index';
 import passportJWT from 'passport-jwt';
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
-const {
-	User
-} = models
+
 
 passport.use(
-  new LocalStrategy({ usernameField: 'email' }, async (email:string, password:string, done:any) => {
+  new LocalStrategy({ usernameField: 'email' }, async (email: string, password: string, done: any) => {
     try {
       const user = await User.findOne({ where: { email: email } });
 
@@ -32,25 +30,25 @@ passport.use(
   })
 );
 passport.use(
-    new JWTStrategy(
-      {
-        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-        secretOrKey: 'testket',
-      },
-      async (jwtPayload:any, done:any) => {
-        try {
-          const user = await User.findByPk(jwtPayload.user.id);
-  
-          if (!user) {
-            return done(null, false);
-          }
-          return done(null, user);
-        } catch (err) {
-          return done(err);
+  new JWTStrategy(
+    {
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+      secretOrKey: 'testket',
+    },
+    async (jwtPayload: any, done: any) => {
+      try {
+        const user = await User.findByPk(jwtPayload.user.id);
+
+        if (!user) {
+          return done(null, false);
         }
+        return done(null, user);
+      } catch (err) {
+        return done(err);
       }
-    )
-  );
+    }
+  )
+);
 
 
 passport.serializeUser((user: any, done) => {
