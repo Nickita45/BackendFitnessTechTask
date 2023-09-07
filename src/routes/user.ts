@@ -63,12 +63,12 @@ export default () => {
         if (!_req.query.id) {
             return res.status(401).json({ message: 'Enter id to change' });
         }
-        const ifNickNameUsed = User.findOne({ where: { nickName: _req.query.nickName } });
+        const ifNickNameUsed = await User.findOne({ where: { nickName: _req.query.nickName } });
         if(ifNickNameUsed){
             return res.status(401).json({ message: 'Nickname is already used' });
         }
         try {
-            const user = User.findByPk(_req.query.id);
+            const user = await User.findByPk(_req.query.id);
             if (!user) {
                 return res.status(401).json({ message: `User with ${_req.query.id} not found` });
             }

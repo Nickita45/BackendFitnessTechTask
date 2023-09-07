@@ -1,24 +1,48 @@
 import { Router, Request, Response, NextFunction } from 'express'
 
-import { Exercise, Program } from '../db'
+import { Exercise } from '../db'
 import { EXERCISE_DIFFICULTY } from '../utils/enums'
 import passport from '../utils/passport'
+import { Op } from 'sequelize'
 
 const router: Router = Router()
 
 export default () => {
 	router.get('/', async (_req: Request, res: Response, _next: NextFunction) => {
-		const exercises = await Exercise.findAll({
-			include: [{
-				model: Program,
-				as: 'program'
-			}]
-		})
+		const { page, limit, programID, search } : any = _req.query;
 
-		return res.json({
-			data: exercises,
+		// empty object
+		const where: any = {};
+
+		const parsedPage = parseInt(page, 10) || 1;
+		const parsedLimit = parseInt(limit, 10) || 10;
+
+		if (programID) {
+			where.programID = programID;
+		}
+
+		// sql like system
+		if (search) {
+			where.name = { [Op.iLike]: `%${search}%` }; 
+		}
+
+		// calculate the offset based on page and limit
+		const offset = (parsedPage - 1) * parsedLimit;
+
+		const exercises = await Exercise.findAll({
+			where,
+			limit: parsedLimit,
+			offset,
+		});
+		// maximum value
+		const totalExercises = await Exercise.count({ where });
+
+		res.json({
+			exercises,
+			currentPage: parsedPage,
+			totalPages: Math.ceil(totalExercises / parsedLimit),
 			message: 'List of exercises'
-		})
+		});
 	})
 	router.post('', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 
