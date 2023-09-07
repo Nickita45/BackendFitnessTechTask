@@ -17,17 +17,17 @@ export default () => {
 
             return res.json({
                 data: completedExercises,
-                message: 'List of completed exercises'
+                message: res.locals.localization.completedList
             })
         } catch (error) {
-            return res.status(500).json({ message: 'Server error' });
+            return res.status(500).json({ message: res.locals.localization.serverError });
         }
     })
     router.post('/:id', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response) => {
         const { exerciseId, durationTime } = _req.query;
 
         if (!exerciseId || !durationTime) {
-            return res.status(400).json({ message: 'ExerciseId and durationInSeconds are required' });
+            return res.status(400).json({ message: res.locals.localization.completedExerciseIdAndDuration });
         }
 
         try {
@@ -39,10 +39,10 @@ export default () => {
 
             return res.json({
                 data: completedExercise,
-                message: 'Completed Exercise created'
+                message: res.locals.localization.completedCreated
             })
         } catch (error) {
-            return res.status(500).json({ message: 'Server error' });
+            return res.status(500).json({ message: res.locals.localization.serverError });
         }
     });
     router.delete('/:id', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response) => {
@@ -55,17 +55,17 @@ export default () => {
             });
 
             if (!completedExercise) {
-                return res.status(404).json({ message: 'Completed exercise not found' });
+                return res.status(404).json({ message: res.locals.localization.completedNotFound });
             }
 
             await completedExercise.destroy();
 
             return res.json({
                 data: completedExercise,
-                message: 'Completed exercise removed successfully'
+                message: res.locals.localization.completedDeleted
             })
         } catch (error) {
-            return res.status(500).json({ message: 'Server error' });
+            return res.status(500).json({ message: res.locals.localization.serverError });
         }
     });
 

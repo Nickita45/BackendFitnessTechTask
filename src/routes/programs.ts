@@ -15,13 +15,13 @@ export default () => {
 		const programs = await Program.findAll()
 		return res.json({
 			data: programs,
-			message: 'List of programs'
+			message: res.locals.localization.programList
 		})
 	})
 	router.put('/edit-exercieses', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 		// programId, exerciesId 
 		if (_req.user.role != "ADMIN") {
-			return res.status(403).json({ message: 'Access denied' });
+			return res.status(403).json({ message: res.locals.localization.accessDenied });
 		}
 		try {
 			const { programId, exercisesToAdd } = _req.query;
@@ -32,10 +32,10 @@ export default () => {
 
 
 			if (!program) {
-				return res.status(401).json({ message: 'Program not found' });
+				return res.status(401).json({ message: res.locals.localization.programNotFound });
 			}
 			if (!exercise) {
-				return res.status(401).json({ message: 'Exercise not found' });
+				return res.status(401).json({ message: res.locals.localization.exerciseNotFound });
 			}
 			
 			const exerciesesNameIsUsed = await Exercise.findOne({
@@ -46,7 +46,7 @@ export default () => {
 			});
 
 			if (exerciesesNameIsUsed) {
-				return res.status(401).json({ message: 'Exercise name is already used in the program' });
+				return res.status(401).json({ message: res.locals.localization.programExcerciseUsed });
 			}
 
 			const newExercise = await Exercise.create(
@@ -60,18 +60,18 @@ export default () => {
 
 			return res.json({
 				data: newExercise,
-				message: 'New exercise added'
+				message: res.locals.localization.addedExercise
 			})
 		} catch (error) {
 			console.error(error);
-			return res.status(500).json({ message: 'Server error' });
+			return res.status(500).json({ message: res.locals.localization.serverError });
 		}
 	})
 
 	router.delete('/edit-exercieses', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 		// programId, exerciesId 
 		if (_req.user.role != "ADMIN") {
-			return res.status(403).json({ message: 'Access denied' });
+			return res.status(403).json({ message: res.locals.localization.accessDenied });
 		}
 		try {
 			const { programId, exercisesToRem } = _req.query;
@@ -82,10 +82,10 @@ export default () => {
 
 
 			if (!program) {
-				return res.status(401).json({ message: 'Program not found' });
+				return res.status(401).json({ message: res.locals.localization.programNotFound });
 			}
 			if (!exercise) {
-				return res.status(401).json({ message: 'Exercise not found' });
+				return res.status(401).json({ message: res.locals.localization.exerciseNotFound });
 			}
 			
 			const exerciesesNameIsUsed = await Exercise.findOne({
@@ -96,18 +96,18 @@ export default () => {
 			});
 
 			if (!exerciesesNameIsUsed) {
-				return res.status(401).json({ message: 'Exercise name is not used in this exercise' });
+				return res.status(401).json({ message: res.locals.localization.programExcerciseNotUsed });
 			}
 
 			await exercise.destroy();
 
 			return res.json({
 				data: exerciesesNameIsUsed,
-				message: 'Exercies was removed'
+				message: res.locals.localization.exerciseDeleted
 			})
 		} catch (error) {
 			console.error(error);
-			return res.status(500).json({ message: 'Server error' });
+			return res.status(500).json({ message: res.locals.localization.serverError });
 		}
 	})
 	return router

@@ -41,13 +41,13 @@ export default () => {
 			exercises,
 			currentPage: parsedPage,
 			totalPages: Math.ceil(totalExercises / parsedLimit),
-			message: 'List of exercises'
+			message: res.locals.localization.listExercises
 		});
 	})
 	router.post('', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 
 		if (_req.user.role != "ADMIN") {
-			return res.status(403).json({ message: 'Access denied' });
+			return res.status(403).json({ message: res.locals.localization.accessDenied });
 		}
 
 		const difficulty = _req.query.difficulty && Object.values(EXERCISE_DIFFICULTY).includes(_req.query.difficulty as EXERCISE_DIFFICULTY) ? _req.query.difficulty : EXERCISE_DIFFICULTY.EASY;
@@ -65,23 +65,23 @@ export default () => {
 
 		return res.json({
 			data: newExercise,
-			message: 'New Exercise'
+			message: res.locals.localization.addedExercise
 		})
 	})
 	router.put('/:id', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 
 		if (_req.user.role != "ADMIN") {
-			return res.status(403).json({ message: 'Access denied' });
+			return res.status(403).json({ message: res.locals.localization.accessDenied });
 		}
 
 		if (!_req.query.id) {
-			return res.status(401).json({ message: 'Enter id to change' });
+			return res.status(401).json({ message: res.locals.localization.wrongId });
 		}
 		try {
 			const exerciseToUpdate = await Exercise.findByPk(_req.query.id);
 
 			if (!exerciseToUpdate) {
-				return res.status(404).json({ message: 'Exercise not found' });
+				return res.status(404).json({ message: res.locals.localization.exerciseNotFound });
 			}
 
 
@@ -95,38 +95,38 @@ export default () => {
 
 			return res.json({
 				data: exerciseToUpdate,
-				message: 'Exercise updated successfully'
+				message: res.locals.localization.exerciseUpdated
 			});
 		} catch (error) {
 			console.error(error);
-			return res.status(500).json({ message: 'Server error' });
+			return res.status(500).json({ message: res.locals.localization.serverError });
 		}
 	})
 	router.delete('/:id', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 
 		if (_req.user.role != "ADMIN") {
-			return res.status(403).json({ message: 'Access denied' });
+			return res.status(403).json({ message: res.locals.localization.accessDenied });
 		}
 
 		if (!_req.query.id) {
-			return res.status(401).json({ message: 'Enter id to remove' });
+			return res.status(401).json({ message: res.locals.localization.wrongIdToRemove });
 		}
 		try {
 			const exercise = await Exercise.findByPk(_req.query.id);
 
 			if (!exercise) {
-				return res.status(404).json({ message: 'Exercise not found' });
+				return res.status(404).json({ message: res.locals.localization.exerciseNotFound });
 			}
 
 			await exercise.destroy();
 
 			return res.json({
 				data: exercise,
-				message: 'Exercise deleted successfully'
+				message: res.locals.localization.exerciseDeleted
 			});
 		} catch (error) {
 			console.error(error);
-			return res.status(500).json({ message: 'Server error' });
+			return res.status(500).json({ message: res.locals.localization.serverError });
 		}
 	})
 
