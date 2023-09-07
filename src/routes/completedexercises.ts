@@ -7,6 +7,11 @@ import passport from '../utils/passport'
 const router: Router = Router()
 
 export default () => {
+    /**
+     * /completed/:id - GET, return all completed exercise by current user
+     * 
+     * return list of completed exercises
+     */
     router.get('/', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
         try {
             const completedExercises = await CompletedExercise.findAll({
@@ -17,17 +22,24 @@ export default () => {
 
             return res.json({
                 data: completedExercises,
-                message: 'List of completed exercises'
+                message: res.locals.localization.completedList
             })
         } catch (error) {
-            return res.status(500).json({ message: 'Server error' });
+            return res.status(500).json({ message: res.locals.localization.serverError });
         }
     })
+    /**
+     * /completed/:id - POST, add completed exercise to DB
+     * parameters:
+	 *  - exerciseId: id of exercise 
+     *  - durationTime: int value in second
+     * return completed exercise 
+     */
     router.post('/:id', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response) => {
         const { exerciseId, durationTime } = _req.query;
 
         if (!exerciseId || !durationTime) {
-            return res.status(400).json({ message: 'ExerciseId and durationInSeconds are required' });
+            return res.status(400).json({ message: res.locals.localization.completedExerciseIdAndDuration });
         }
 
         try {
@@ -39,12 +51,18 @@ export default () => {
 
             return res.json({
                 data: completedExercise,
-                message: 'Completed Exercise created'
+                message: res.locals.localization.completedCreated
             })
         } catch (error) {
-            return res.status(500).json({ message: 'Server error' });
+            return res.status(500).json({ message: res.locals.localization.serverError });
         }
     });
+     /**
+     * /completed/:id - DELETE, remove completed exercise, user can delete only his completed exercise
+     * parameters:
+	 *  - id: id of completed exercise 
+     * return deleted exercise 
+     */
     router.delete('/:id', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response) => {
         const completedExerciseId = _req.params.id;
 
@@ -55,17 +73,17 @@ export default () => {
             });
 
             if (!completedExercise) {
-                return res.status(404).json({ message: 'Completed exercise not found' });
+                return res.status(404).json({ message: res.locals.localization.completedNotFound });
             }
 
             await completedExercise.destroy();
 
             return res.json({
                 data: completedExercise,
-                message: 'Completed exercise removed successfully'
+                message: res.locals.localization.completedDeleted
             })
         } catch (error) {
-            return res.status(500).json({ message: 'Server error' });
+            return res.status(500).json({ message: res.locals.localization.serverError });
         }
     });
 

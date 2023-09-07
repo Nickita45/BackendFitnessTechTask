@@ -1,0 +1,32 @@
+{
+    "listExercises": "List of exercises",
+    "addedExercise": "New exercises created",
+    "exerciseNotFound": "Exercise not found",
+    "exerciseDeleted": "Exercise deleted successfully",
+    "exerciseUpdated": "Exercise updated successfully",
+
+    "userNotFound": "User not found",
+    "userList": "List of users",
+    "userInfo": "Information about user",
+    "userNicknameUsed": "Nickname is already used",
+    "userUpdate" : "User updated successfully",
+    "userEmailUsed": "Email is already used",
+
+    "programList": "List of programs",
+    "programNotFound": "Program not found", 
+    "programExcerciseUsed": "Exercise name is already used in the program",
+    "programExcerciseNotUsed": "Exercise name is not used in this program",
+
+    "completedList": "List of completed exercises",
+    "completedExerciseIdAndDuration": "ExerciseId and durationInSeconds are required",
+    "completedCreated": "Completed Exercise created",
+    "completedNotFound": "Completed Exercise not found",
+    "completedDeleted": "Completed Exercise deleted succesfully",
+
+    "accessDenied": "Access denied",
+    "wrongId": "Enter id to change",
+    "wrongIdToRemove": "Enter id to remove",
+    "serverError": "Server error",
+    "invalidCredentials": "Invalid Credentials",
+    "protectedRoute": "Protected Route"
+}

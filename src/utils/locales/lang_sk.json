@@ -1,0 +1,32 @@
+{
+    "listExercises": "Zoznam cvičení",
+    "addedExercise": "Nové cvičenie bolo vytvorené",
+    "exerciseNotFound": "Cvičenie nenájdené",
+    "exerciseDeleted": "Cvičenie bolo úspešne odstránené",
+    "exerciseUpdated": "Cvičenie bolo úspešne aktualizované",
+
+    "userNotFound": "Používateľ nenájdený",
+    "userList": "Zoznam používateľov",
+    "userInfo": "Informácie o používateľovi",
+    "userNicknameUsed": "Prezývka je už použitá",
+    "userUpdate": "Používateľ bol úspešne aktualizovaný",
+    "userEmailUsed": "E-mail je už použitý",
+
+    "programList": "Zoznam programov",
+    "programNotFound": "Program nenájdený", 
+    "programExcerciseUsed": "Názov cvičenia je už použitý v programe",
+    "programExcerciseNotUsed": "Názov cvičenia nie je použitý v tomto programe",
+
+    "completedList": "Zoznam dokončených cvičení",
+    "completedExerciseIdAndDuration": "Vyžaduje sa ID cvičenia a dĺžka v sekundách",
+    "completedCreated": "Dokončené cvičenie bolo vytvorené",
+    "completedNotFound": "Dokončené cvičenie nenájdené",
+    "completedDeleted": "Dokončené cvičenie bolo úspešne odstránené",
+
+    "accessDenied": "Prístup odmietnutý",
+    "wrongId": "Zadajte ID na zmenu",
+    "wrongIdToRemove": "Zadajte ID na odstránenie",
+    "serverError": "Chyba servera",
+    "invalidCredentials": "Neplatné prihlasovacie údaje",
+    "protectedRoute": "Chránená cesta"
+}

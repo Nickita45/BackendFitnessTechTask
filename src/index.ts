@@ -10,6 +10,7 @@ import CompletedExercisesRouter from './routes/completedexercises'
 import passport from 'passport'
 import session from 'express-session'
 import "./utils/passport"
+import { localizationMiddleware } from './utils/localization'
 
 const app = express();
 
@@ -22,6 +23,8 @@ app.use(
     })
   );
 
+app.use(localizationMiddleware)
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -32,6 +35,7 @@ app.use('/programs', ProgramRouter())
 app.use('/exercises', ExerciseRouter())
 app.use('/user', UserRouter())
 app.use('/completed', CompletedExercisesRouter())
+
 
 const httpServer = http.createServer(app)
 
