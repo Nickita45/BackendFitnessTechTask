@@ -8,6 +8,15 @@ import { Op } from 'sequelize'
 const router: Router = Router()
 
 export default () => {
+	/**
+     * /exercises/ - GET, using different filters value for select from DB
+     * parameters:
+     *  - page: int value, index
+     *  - limit: int value, limit of get value, max is 10
+	 *  - programID: int value, program id 
+	 *  - search: string, include in name value
+     * return list of exercises
+     */
 	router.get('/', async (_req: Request, res: Response, _next: NextFunction) => {
 		const { page, limit, programID, search } : any = _req.query;
 
@@ -44,7 +53,15 @@ export default () => {
 			message: res.locals.localization.listExercises
 		});
 	})
-	router.post('', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
+	/**
+     * /exercises/:id - POST, create a new exercises
+     * parameters:
+     *  - difficulty: can be only EASY, MEDIUM and HARD
+     *  - name: string, name of exercises
+	 *  - programID: int value, program id 
+     * return new exercises if ADMIN
+     */
+	router.post('/:id', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 
 		if (_req.user.role != "ADMIN") {
 			return res.status(403).json({ message: res.locals.localization.accessDenied });
@@ -68,6 +85,15 @@ export default () => {
 			message: res.locals.localization.addedExercise
 		})
 	})
+	/**
+     * /exercises/:id - PUT, update exercises
+     * parameters:
+	 *  - id: id of exercise to update
+     *  - difficulty: can be only EASY, MEDIUM and HARD
+     *  - name: string, name of exercises
+	 *  - programID: int value, program id 
+     * return updated exercise if ADMIN
+     */
 	router.put('/:id', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 
 		if (_req.user.role != "ADMIN") {
@@ -102,6 +128,12 @@ export default () => {
 			return res.status(500).json({ message: res.locals.localization.serverError });
 		}
 	})
+	/**
+     * /exercises/:id - DELETE, delete exercises
+     * parameters:
+	 *  - id: id of exercise to update
+     * return deleted exercise if ADMIN
+     */
 	router.delete('/:id', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 
 		if (_req.user.role != "ADMIN") {

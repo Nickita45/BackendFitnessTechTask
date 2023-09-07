@@ -16,6 +16,10 @@ import crypto from 'crypto';
 const router: Router = Router()
 
 export default () => {
+    /**
+     * /user/profile - GET
+     * return information about current user 
+     */
     router.get('/profile', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response) => {
         try {
             const user = await User.findByPk(_req.user.id, { attributes: ['name', 'surname', 'age', 'nickName'] });
@@ -32,6 +36,11 @@ export default () => {
         // only for authorization
         res.json({ message: res.locals.localization.protectedRoute, user: _req.user });
     });
+    /**
+     * /user/ - GET
+     * return id, nickname if USER
+     * return all information if ADMIN
+     */
     router.get('/', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 
         let programs = await User.findAll();
@@ -43,6 +52,12 @@ export default () => {
             message: res.locals.localization.userList
         })
     })
+    /**
+     * /user/:id - GET
+     * parameters:
+     *  - id: user id 
+     * return information about user by id if ADMIN
+     */
     router.get('/:id', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 
         if (_req.user.role != "ADMIN") {
@@ -60,6 +75,17 @@ export default () => {
             message: res.locals.localization.userInfo
         })
     })
+    /**
+     * /user/:id - PUT, update to DB a user
+     * parameters:
+     *  - id: user id 
+     *  - name: name user
+     *  - surname: surname
+     *  - role: can be ADMIN or USER
+     *  - age: age of user
+     *  - nickname: user nickname, unique field 
+     * return information about updated user if ADMIN
+     */
     router.put('/:id', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 
         if (_req.user.role != "ADMIN") {
@@ -90,13 +116,21 @@ export default () => {
 
             return res.json({
                 data: user,
-                message: res.locals.localization.userNotFound
+                message: res.locals.localization.userUpdate
             })
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: res.locals.localization.serverError });
         }
     })
+    /**
+     * /user/login - POST, login 
+     * parameters:
+     *  - nickname: user nickname, unique field 
+     *  - password: user password, 
+     *  - email: email field
+     * return jwt token
+     */
     router.post('/login', (req: Request, res: Response, next: NextFunction) => {
         passport.authenticate('local', (err: any, user: UserModel, info: any) => {
             if (err) {
@@ -120,7 +154,18 @@ export default () => {
             });
         })(req, res, next);
     });
-
+     /**
+     * /register - POST, register 
+     * parameters:
+     *  - id: user id 
+     *  - name: name user
+     *  - surname: surname
+     *  - age: age of user
+     *  - nickname: user nickname, unique field 
+     *  - email: email validation, unique field
+     *  - password: password of user
+     * return jwt token
+     */
     router.post('/register', async (_req: Request, res: Response, _next: NextFunction) => {
         try {
 
@@ -128,7 +173,7 @@ export default () => {
                 return res.status(400).json({ msg: res.locals.localization.invalidCredentials });
             }
 
-            const role = _req.query.role && Object.values(ROLE).includes(_req.query.role as ROLE) ? _req.query.role : ROLE.USER;
+            const role = ROLE.USER;
 
             const userCheckUniqueEmail = await User.findOne({ where: { email: _req.query.email } });
             if (userCheckUniqueEmail) {

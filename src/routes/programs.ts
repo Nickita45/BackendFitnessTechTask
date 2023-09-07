@@ -11,6 +11,10 @@ import passport from '../utils/passport'
 const router: Router = Router()
 
 export default () => {
+	/**
+     * /programs/
+     * return information about programs 
+     */
 	router.get('/', async (_req: Request, res: Response, _next: NextFunction) => {
 		const programs = await Program.findAll()
 		return res.json({
@@ -18,6 +22,13 @@ export default () => {
 			message: res.locals.localization.programList
 		})
 	})
+	/**
+     * /programs/edit-eexercieses - PUT, add exercise to program list  
+     * parameters:
+     *  - programId: program id
+     *  - exercisesToAdd: exercise id 
+     * return exercise added to program if ADMIN
+     */
 	router.put('/edit-exercieses', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 		// programId, exerciesId 
 		if (_req.user.role != "ADMIN") {
@@ -67,7 +78,13 @@ export default () => {
 			return res.status(500).json({ message: res.locals.localization.serverError });
 		}
 	})
-
+	/**
+     * /programs/edit-eexercieses - DELETE, remove exercise from program list
+     * parameters:
+     *  - programId: program id
+     *  - exercisesToRem: exercise id 
+     * return exercise removed from program if ADMIN
+     */
 	router.delete('/edit-exercieses', passport.authenticate('jwt', { session: false }), async (_req: any, res: Response, _next: NextFunction) => {
 		// programId, exerciesId 
 		if (_req.user.role != "ADMIN") {
